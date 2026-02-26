@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - School System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+        }
+
+        .welcome-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .welcome-section p {
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            opacity: 0.95;
+        }
+
+        .welcome-section strong {
+            font-weight: 600;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background-color: #f8f9fa;
+            padding: 15px 30px;
+            border-bottom: 2px solid #667eea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-links a {
+            color: #667eea;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.95em;
+        }
+
+        .nav-links a:hover {
+            color: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        .logout-btn {
+            background-color: #dc3545;
+            color: white !important;
+            padding: 10px 25px;
+            border-radius: 5px;
+            margin: 0 !important;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #c82333 !important;
+            transform: none;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 40px 30px;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 50px;
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Questions List */
+        .questions-list,
+        .submissions-list {
+            list-style: none;
+        }
+
+        .question-item,
+        .submission-item {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+
+        .question-item:hover,
+        .submission-item:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .question-header {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .question-info {
+            flex: 1;
+        }
+
+        .teacher-name {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .question-file {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+
+        .submission-info {
+            flex: 1;
+        }
+
+        .submission-file {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .status-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        /* Form Styling */
+        .upload-form {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .form-group input[type="file"],
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input[type="file"]:focus,
+        .form-group input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* Action Links */
+        .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .action-link {
+            color: #667eea;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 1px solid #667eea;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 0.85em;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .action-link:hover {
+            background-color: #667eea;
+            color: white;
+        }
+
+        .action-link.success {
+            color: #28a745;
+            border-color: #28a745;
+        }
+
+        .action-link.success:hover {
+            background-color: #28a745;
+            color: white;
+        }
+
+        /* Submitted Section */
+        .submitted-badge {
+            display: inline-block;
+            background: #d4edda;
+            color: #155724;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85em;
+            margin-right: 10px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-style: italic;
+            list-style: none;
+        }
+
+        .empty-state-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #f8f9fa;
+            padding: 25px;
+            text-align: center;
+            border-top: 2px solid #ddd;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .navbar {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .nav-links {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-links a {
+                margin: 5px 0;
+                padding: 10px;
+            }
+
+            .logout-btn {
+                width: 100%;
+                margin: 0 !important;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .question-header {
+                flex-direction: column;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .action-link {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>👨‍🎓 Student Dashboard</h1>
+            <div class="welcome-section">
+                <p>Welcome <strong>{{ session.name }}</strong>!</p>
+                <p>Your Class: <strong>🏫 {{ school }}</strong></p>
+            </div>
+        </div>
+
+        <!-- Navigation Bar -->
+        <div class="navbar">
+            <div class="nav-links">
+                <a href="/">🏠 Home</a>
+                <a href="/grade_report">📊 View Grades</a>
+            </div>
+            <a href="/logout" class="logout-btn">🚪 Logout</a>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Available Questions Section -->
+            <div class="section">
+                <h2 class="section-title">📋 Available Questions</h2>
+                <ul class="questions-list">
+                    {% for q in questions %}
+                    <li class="question-item">
+                        <div class="question-header">
+                            <div class="question-info">
+                                <div class="teacher-name">👨‍🏫 Teacher: {{ q.teacher }}</div>
+                                <div class="question-file">📄 {{ q.file }}</div>
+                            </div>
+                        </div>
+
+                    
+                        <div style="background: #fff3cd; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+                            <div style="color: #856404; font-weight: 600; margin-bottom: 15px;">⏳ Awaiting Your Answer</div>
+                            <form action="/upload_answer" method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="question_id" value="{{ q._id }}">
+
+                                <div class="form-group">
+                                    <label for="answer-file-{{ q._id }}">Your Answer (.docx):</label>
+                                    <input type="file" id="answer-file-{{ q._id }}" name="file" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="teacher-name-{{ q._id }}">Teacher Name:</label>
+                                    <input type="text" id="teacher-name-{{ q._id }}" name="teacher" placeholder="Enter teacher's name" required>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">📤 Submit Answer</button>
+                            </form>
+                        </div>
+                        
+
+                        <div class="actions">
+                            <a href="/uploads/{{ q.file }}" download class="action-link">⬇️ Download Question</a>
+                        </div>
+                    </li>
+                    {% else %}
+                    <li class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <div>No questions available yet</div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Your Submissions Section -->
+            <div class="section">
+                <h2 class="section-title">📚 Your Submissions</h2>
+                <ul class="submissions-list">
+                    {% for a in answers %}
+                    <li class="submission-item">
+                        <div class="question-header">
+                            <div class="submission-info">
+                                <div class="submission-file">📄 {{ a.file }}</div>
+                            </div>
+                            <div>
+                                {% if a.grade %}
+                                <span class="status-badge status-success">✅ Graded: {{ a.grade }}%</span>
+                                {% else %}
+                                <span class="status-badge status-warning">⏳ Pending Grading</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </li>
+                    {% else %}
+                    <li class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <div>No submissions yet</div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>&copy; 2026 School System. All rights reserved. | Student Dashboard</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard - School System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+        }
+
+        .header-subtitle {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background-color: #f8f9fa;
+            padding: 15px 30px;
+            border-bottom: 2px solid #667eea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-links a {
+            color: #667eea;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.95em;
+        }
+
+        .nav-links a:hover {
+            color: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        .logout-btn {
+            background-color: #dc3545;
+            color: white !important;
+            padding: 10px 25px;
+            border-radius: 5px;
+            margin: 0 !important;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #c82333 !important;
+            transform: none;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 40px 30px;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 50px;
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Form Styling */
+        .upload-form {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .form-group input[type="file"],
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input[type="file"]:focus,
+        .form-group input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            padding: 8px 18px;
+            font-size: 0.85em;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 18px;
+            font-size: 0.85em;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+            padding: 8px 18px;
+            font-size: 0.85em;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        /* Questions List */
+        .questions-list,
+        .answers-list {
+            list-style: none;
+        }
+
+        .question-item,
+        .answer-item {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+
+        .question-item:hover,
+        .answer-item:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .question-header,
+        .answer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .question-info,
+        .answer-info {
+            flex: 1;
+        }
+
+        .question-file,
+        .answer-file {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+
+        .question-class,
+        .answer-class,
+        .answer-student {
+            color: #666;
+            font-size: 0.95em;
+            margin-bottom: 5px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .status-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .action-link {
+            color: #667eea;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 1px solid #667eea;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 0.85em;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .action-link:hover {
+            background-color: #667eea;
+            color: white;
+        }
+
+        .action-link.danger {
+            color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .action-link.danger:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .action-link.success {
+            color: #28a745;
+            border-color: #28a745;
+        }
+
+        .action-link.success:hover {
+            background-color: #28a745;
+            color: white;
+        }
+
+        /* Official Answer Section */
+        .official-answer {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .no-answer-section {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        /* Nested Form */
+        .nested-form {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+
+        .nested-form .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-style: italic;
+        }
+
+        .empty-state-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #f8f9fa;
+            padding: 25px;
+            text-align: center;
+            border-top: 2px solid #ddd;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .navbar {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .nav-links {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-links a {
+                margin: 5px 0;
+                padding: 10px;
+            }
+
+            .logout-btn {
+                width: 100%;
+                margin: 0 !important;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .question-header,
+            .answer-header {
+                flex-direction: column;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .action-link {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>👨‍🏫 Teacher Dashboard</h1>
+            <p class="header-subtitle">Manage Questions, Answers & Student Grades</p>
+        </div>
+
+        <!-- Navigation Bar -->
+        <div class="navbar">
+            <div class="nav-links">
+                <a href="/">🏠 Home</a>
+                <a href="/grade_report">📊 Grade Report</a>
+            </div>
+            <a href="/logout" class="logout-btn">🚪 Logout</a>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Upload Questions Section -->
+            <div class="section">
+                <h2 class="section-title">📤 Upload Questions</h2>
+                <div class="upload-form">
+                    <form action="/upload_question" method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="question-file">Select Question File:</label>
+                            <input type="file" id="question-file" name="file" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="class-name">Class/School Name:</label>
+                            <input type="text" id="class-name" name="class" placeholder="e.g., Grade 10-A, Grade 11-B" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">📤 Upload Question</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Your Questions Section -->
+            <div class="section">
+                <h2 class="section-title">📋 Your Questions</h2>
+                <ul class="questions-list">
+                    {% for q in questions %}
+                    <li class="question-item">
+                        <div class="question-header">
+                            <div class="question-info">
+                                <div class="question-file">📄 {{ q.file }}</div>
+                                <div class="question-class">🏫 Class: {{ q.class }}</div>
+                            </div>
+                        </div>
+
+                        {% if q.official %}
+                        <div class="official-answer">
+                            <div style="margin-bottom: 10px; font-weight: 600;">✅ Official Answer Available</div>
+                            <div style="color: #333; margin-bottom: 10px;">📄 {{ q.official.file }}</div>
+                            <div class="actions">
+                                <a href="/uploads/{{ q.official.file }}" download class="action-link success">⬇️ Download Answer Key</a>
+                                <a href="/delete_official/{{ q.official._id }}" class="action-link danger">❌ Delete Answer Key</a>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="no-answer-section">
+                            <div style="margin-bottom: 15px; font-weight: 600;">⚠️ No Official Answer Yet</div>
+                            <form action="/upload_official_answer" method="POST" enctype="multipart/form-data" class="nested-form">
+                                <input type="hidden" name="question_id" value="{{ q._id }}">
+                                <div class="form-group">
+                                    <label>Upload Official Answer/Answer Key:</label>
+                                    <input type="file" name="file" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">📤 Upload Answer Key</button>
+                            </form>
+                        </div>
+                        {% endif %}
+                    </li>
+                    {% else %}
+                    <li class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <div>No questions uploaded yet</div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Student Answers Section -->
+            <div class="section">
+                <h2 class="section-title">📝 Student Answers</h2>
+                <ul class="answers-list">
+                    {% for a in answers %}
+                    <li class="answer-item">
+                        <div class="answer-header">
+                            <div class="answer-info">
+                                <div class="answer-student">👨‍🎓 Student: <strong>{{ a.student }}</strong></div>
+                                <div class="answer-class">🏫 Class: {{ a.class }}</div>
+                                <div class="answer-file">📄 {{ a.file }}</div>
+                            </div>
+                            <div>
+                                {% if a.grade %}
+                                <span class="status-badge status-success">✅ Graded: {{ a.grade }}%</span>
+                                {% else %}
+                                <span class="status-badge status-warning">⏳ Pending Grading</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="actions">
+                            <a href="/uploads/{{ a.file }}" download class="action-link">⬇️ Download Answer</a>
+                            {% if not a.grade %}
+                            <a href="/grade/{{ a._id }}" class="action-link success">📝 Grade Answer</a>
+                            {% endif %}
+                            <a href="/delete_answer/{{ a._id }}" class="action-link danger">❌ Delete</a>
+                        </div>
+                    </li>
+                    {% else %}
+                    <li class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <div>No student answers submitted yet</div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>&copy; 2026 School System. All rights reserved. | Teacher Dashboard</p>
+        </div>
+    </div>
+</body>
+</html>
