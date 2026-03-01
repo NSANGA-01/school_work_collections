@@ -1,6 +1,6 @@
-# Bwira GitHub ko project ari iya Python
+
 * linguist-language=Python
 
-# Hisha amadosiye y'izindi ndimi udashaka ko agaragara
+
 *.html linguist-documentation
 *.js linguist-documentation
