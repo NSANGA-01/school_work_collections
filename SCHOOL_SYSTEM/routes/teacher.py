@@ -188,8 +188,25 @@ def grade_report():
         })
 
     return render_template("grade_report.html", report=report)
+@teacher_bp.route('/delete_answer/<answer_id>')
+def delete_answer(answer_id):
+    if session.get("role") != "teacher":
+        return redirect("/login")
+    db = current_app.db
+    answer = db.answers.find_one({
+        "_id": ObjectId(answer_id)
+    })
 
+    if answer:
+        # delete file from uploads
+        filepath = os.path.join(current_app.config["UPLOAD_FOLDER"], answer["file"])
+        if os.path.exists(filepath):
+            os.remove(filepath)
 
+        db.answers.delete_one({
+            "_id": ObjectId(answer_id)
+        })
 
+    return redirect("/teacher")
 
 
