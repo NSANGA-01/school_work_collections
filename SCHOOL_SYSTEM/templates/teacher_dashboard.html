@@ -211,21 +211,40 @@
             transform: translateY(-2px);
         }
 
-        /* Questions List */
+        /* Questions + Answers Grid */
         .questions-list,
         .answers-list {
             list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            padding: 0;
+            margin: 0;
+        }
+
+        .questions-list {
+            max-height: 520px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .answers-list {
+            max-height: 520px;
+            overflow-y: auto;
+            padding-right: 10px;
         }
 
         .question-item,
         .answer-item {
             background: white;
-            padding: 25px;
-            margin-bottom: 20px;
+            padding: 18px;
             border-radius: 8px;
             border-left: 4px solid #667eea;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
             transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .question-item:hover,
@@ -442,6 +461,7 @@
         <!-- Header -->
         <div class="header">
             <h1>👨‍🏫 Teacher Dashboard</h1>
+            <p class="header-subtitle">Welcome, {{ teacher_name }}!</p>
             <p class="header-subtitle">Manage Questions, Answers & Student Grades</p>
         </div>
 
@@ -528,7 +548,6 @@
                         <div class="answer-header">
                             <div class="answer-info">
                                 <div class="answer-student">👨‍🎓 Student: <strong>{{ a.student }}</strong></div>
-                                <div class="answer-class">🏫 Class: {{ a.class }}</div>
                                 <div class="answer-file">📄 {{ a.file }}</div>
                             </div>
                             <div>

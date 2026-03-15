@@ -66,7 +66,8 @@ def teacher_dashboard():
 
     return render_template(
         "teacher_dashboard.html",
-        questions=questions,answers = answers
+        questions=questions,answers = answers,
+         teacher_name=session.get("name")
     )
 
 @teacher_bp.route("/upload_question", methods=["POST"])
