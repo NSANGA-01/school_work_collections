@@ -10,6 +10,15 @@ def init_db(database):
     global db
     db = database
 
+@auth_bp.route('/home', methods=['GET'])
+def home():
+    return render_template('home.html')
+
+@auth_bp.route('/home', methods=['GET'])
+def home():
+    return render_template('home.html')
+   
+
 
 @auth_bp.route('/', methods=['GET', 'POST'])
 def register():
